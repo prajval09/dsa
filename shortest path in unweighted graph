@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+void bfs(int i,map<int,list<int>>&adj,map<int,bool>&vis,map<int,int>&parent)
+{
+	vis[i]=1;
+	queue<int>q;
+	q.push(i);
+
+	parent[i]=-1;
+	while(!q.empty())
+	{
+		int front=q.front();
+		q.pop();
+
+		for(auto j:adj[front])
+		{
+			if(!vis[j])
+			{
+				vis[j]=1;
+				q.push(j);
+				parent[j]=front;
+			}
+		}
+	}
+}
+
+vector<int> shortestPath( vector<pair<int,int>> edges , int n , int m, int s , int t){
+	
+	// Write your code here
+	//cout<<"gvn";
+	map<int,list<int>>adj;
+
+	for(int i=0;i<m;i++)
+	{
+		int u=edges[i].first;
+		int v=edges[i].second;
+
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+
+	map<int,bool>vis;
+	map<int,int>parent;
+
+	bfs(s,adj,vis,parent);
+	
+	
+
+	vector<int>ans;
+	ans.push_back(t);
+	
+	while(t!=s)
+	{
+		ans.push_back(parent[t]);
+		t=parent[t];
+	}
+
+	//ans.push_back(s);
+
+	reverse(ans.begin(),ans.end());
+
+	for(int i=0;i<ans.size();i++)
+	{
+		//cout<<ans[i]<<"->";
+	}
+
+	return ans;
+
+}
