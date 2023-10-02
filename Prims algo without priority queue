@@ -1,0 +1,77 @@
+#include <bits/stdc++.h> 
+vector<pair<pair<int, int>, int>> calculatePrimsMST(int n, int m, vector<pair<pair<int, int>, int>> &g)
+{
+    //create adjecency list/mapping of node to <adj node,dist>
+    map<int,list<pair<int ,int>>>adj;
+    {
+        for(int i=0;i<g.size();i++)
+        {
+            int a=g[i].first.first;
+            int b=g[i].first.second;
+            int c=g[i].second;
+
+            adj[a].push_back({b,c});
+            adj[b].push_back({a,c});
+
+        }
+
+    //cereate distence visited and parent array
+        vector<int>dist(n+1);
+        vector<int>parent(n+1);
+        vector<bool>vis(n+1);
+
+    //set dist to maxima vis to false parent to -1
+
+        for(int i=1;i<=n;i++)
+        {
+            dist[i]=INT_MAX;
+            parent[i]=-1;
+            vis[i]=false;
+        } 
+
+        dist[1]=0;
+        parent[1]=-1;
+
+        
+        for(int i=1;i<=n;i++)
+        {
+
+            int min=INT_MAX;
+            int u;
+
+            for(int j=1;j<=n;j++)
+            {
+                if(vis[j]==0&&dist[j]<min)
+                {
+                    min=dist[j];
+                    u=j;
+                }
+            }
+
+            vis[u]=true;
+
+            for(auto k:adj[u])
+            {
+                int y=k.first;
+                int z=k.second;
+
+                if(vis[y]==0&&dist[y]>z)
+                {
+                    dist[y]=z;
+                    parent[y]=u;
+                }
+            }
+
+        }
+
+        vector<pair<pair<int, int>, int>>ans;
+
+        for(int i=2;i<=n;i++)
+        {
+            ans.push_back({{parent[i], i}, dist[i]});
+        }
+
+        return ans;
+    }
+
+}
