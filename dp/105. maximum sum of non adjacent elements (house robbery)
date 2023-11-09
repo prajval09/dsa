@@ -1,1 +1,89 @@
+class Solution {
+private:
 
+//recurrence relation
+
+/*int solve(vector<int>& nums,int n)
+{
+    if(n<0)
+    return 0;
+
+    if(n==0)
+    return nums[0];
+
+    int temp1=solve(nums,n-2)+nums[n];
+    int temp2=solve(nums,n-1);
+
+    return max(temp1,temp2);
+
+}*/
+
+//memoization+recc(top down)
+
+/*int solve(vector<int>& nums,int n,vector<int>&dp)
+{
+    if(n<0)
+    return 0;
+
+    if(n==0)
+    return nums[0];
+
+    if(dp[n]!=INT_MAX)
+    return dp[n];
+
+    int temp1=solve(nums,n-2,dp)+nums[n];
+    int temp2=solve(nums,n-1,dp);
+
+    dp[n]=max(temp1,temp2);
+    return max(temp1,temp2);
+
+}
+
+memoization+iter(bottom up)
+
+int solve(vector<int>& nums,int n)
+{
+    vector<int>dp(n+1,0);
+    dp[0]=nums[0];
+    if(n>1)
+    dp[1]=max(nums[0],nums[1]);
+
+    for(int i=2;i<n;i++)
+    {
+
+       int temp1=dp[i-2]+nums[i];
+        int temp2=dp[i-1];
+
+        dp[i]=max(temp1,temp2);
+    }
+    return dp[n-1];
+}*/
+
+
+//Space Optimization
+
+
+int solve(vector<int>& nums,int n)
+{
+    int prev2=nums[0];
+    int prev1=0;
+
+    for(int i=1;i<n;i++)
+    {
+
+       int temp1=prev1+nums[i];
+        int temp2=prev2;
+
+        int ans=max(temp1,temp2);
+        prev1=prev2;
+        prev2=ans;
+    }
+    return prev2;
+}
+
+public:
+    int rob(vector<int>& nums) {
+        int n=nums.size();
+        return solve(nums,n);
+    }
+};
